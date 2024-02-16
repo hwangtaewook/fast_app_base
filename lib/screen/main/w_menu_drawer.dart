@@ -1,6 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:fast_app_base/screen/opensource/s_opensource.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
@@ -45,7 +44,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
               padding: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
+                      topRight: Radius.circular(5),
+                      bottomRight: Radius.circular(5)),
                   color: context.colors.background),
               child: isSmallScreen(context)
                   ? SingleChildScrollView(
@@ -174,15 +174,18 @@ class _MenuDrawerState extends State<MenuDrawer> {
                     DropdownButton<String>(
                       items: [
                         menu(currentLanguage),
-                        menu(Language.values.where((element) => element != currentLanguage).first),
+                        menu(Language.values
+                            .where((element) => element != currentLanguage)
+                            .first),
                       ],
                       onChanged: (value) async {
                         if (value == null) {
                           return;
                         }
-                        await context.setLocale(Language.find(value.toLowerCase()).locale);
+                        await context.setLocale(
+                            Language.find(value.toLowerCase()).locale);
                       },
-                      value: describeEnum(currentLanguage).capitalizeFirst,
+                      value: currentLanguage.name.capitalizeFirst,
                       underline: const SizedBox.shrink(),
                       elevation: 1,
                       borderRadius: BorderRadius.circular(10),
@@ -196,14 +199,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
   DropdownMenuItem<String> menu(Language language) {
     return DropdownMenuItem(
-      value: describeEnum(language).capitalizeFirst,
+      value: language.name.capitalizeFirst,
       child: Row(
         children: [
           flag(language.flagPath),
           const Width(8),
-          describeEnum(language)
-              .capitalizeFirst!
-              .text
+          language.name.capitalizeFirst!.text
               .color(Theme.of(context).textTheme.bodyLarge?.color)
               .size(12)
               .makeWithDefaultFont(),
@@ -234,7 +235,8 @@ class _MenuWidget extends StatelessWidget {
   final String text;
   final Function() onTap;
 
-  const _MenuWidget(this.text, {Key? key, required this.onTap}) : super(key: key);
+  const _MenuWidget(this.text, {Key? key, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
